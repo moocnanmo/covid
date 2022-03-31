@@ -9,11 +9,9 @@
       </div>
       <div class="wrap">
         <div>
-          高风险地区<span class="high">
-            {{ riskarea && riskarea.highNum }} </span
-          >个，中风险地区<span class="mid">
-            {{ riskarea && riskarea.midNum }} </span
-          >个
+          高风险地区
+          <span class="high">{{ riskarea && riskarea.highNum }}</span>个，中风险地区
+          <span class="mid">{{ riskarea && riskarea.midNum }}</span>个
         </div>
         <div class="more" @click="toArea">
           查看全部
@@ -37,22 +35,13 @@
       <div class="chartDiv">
         <van-tabs :value="active" animated @change="tabChange">
           <van-tab title="现存确诊">
-            <div
-              id="curConfirm"
-              style="width: 7.2rem; height: 6rem; margin: 0 auto"
-            ></div>
+            <div id="curConfirm" style="width: 7.2rem; height: 6rem; margin: 0 auto"></div>
           </van-tab>
           <van-tab title="风险地区">
-            <div
-              id="riskAreaArr"
-              style="width: 7.2rem; height: 6rem; margin: 0 auto"
-            ></div>
+            <div id="riskAreaArr" style="width: 7.2rem; height: 6rem; margin: 0 auto"></div>
           </van-tab>
           <van-tab title="累计确诊">
-            <div
-              id="confirm"
-              style="width: 7.2rem; height: 6rem; margin: 0 auto"
-            ></div>
+            <div id="confirm" style="width: 7.2rem; height: 6rem; margin: 0 auto"></div>
           </van-tab>
         </van-tabs>
       </div>
@@ -64,10 +53,10 @@ export default {
   props: {
     chinaInfo: {
       type: Array,
-      default: () => {},
+      default: () => { },
     },
   },
-  data() {
+  data () {
     return {
       active: 0,
       confirmArr: [],
@@ -86,9 +75,9 @@ export default {
     };
   },
   computed: {},
-  created() {},
+  created () { },
   watch: {
-    chinaInfo(val) {
+    chinaInfo (val) {
       this.getData();
       val.slice(2).forEach((item) => {
         if (item.AddConfirm > 0 || item.nowConfirm > 0 || item.higAndMid > 0) {
@@ -109,7 +98,7 @@ export default {
       });
     },
   },
-  mounted() {
+  mounted () {
     this.$bus.$on("modifyTime", (data) => {
       this.modifyTime = data;
     });
@@ -118,19 +107,19 @@ export default {
     });
   },
   methods: {
-    detailClick(row) {
+    detailClick (row) {
       this.$router.push({
         name: "City",
         query: { city: row.name },
       });
     },
-    toArea() {
+    toArea () {
       this.$router.push({
         name: "Area",
         params: { modifyTime: this.modifyTime },
       });
     },
-    tabChange(activeIdx) {
+    tabChange (activeIdx) {
       if (activeIdx === 1) {
         this.$nextTick(() => {
           this.$myChart.chinaMap("riskAreaArr", this.riskAreaArr);
@@ -141,7 +130,7 @@ export default {
         });
       }
     },
-    getData() {
+    getData () {
       let curConfirmArr = [];
       this.chinaInfo.forEach((item) => {
         //累计确诊

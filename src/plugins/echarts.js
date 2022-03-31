@@ -125,36 +125,31 @@ const install = function (Vue, options) {
                 pieces: [ // 配置颜色区间
                   {
                     min: 0,
-                    max: 0,
-                    color: "#FFFFFF"
-                  },
-                  {
-                    min: 1,
-                    max: 9,
-                    color: "#FAEBD2"
-                  },
-                  {
-                    min: 10,
                     max: 99,
-                    color: "#E9A188"
+                    color: "#fcfff5"
                   },
                   {
                     min: 100,
                     max: 499,
-                    color: "#D56355"
+                    color: "#FAEBD2"
                   },
                   {
                     min: 500,
-                    max: 999,
+                    max: 1999,
+                    color: "#E9A188"
+                  },
+                  {
+                    min: 2000,
+                    max: 2999,
                     color: "#BB3937"
                   },
                   {
-                    min: 1000,
-                    max: 10000,
+                    min: 3000,
+                    max: 5000,
                     color: "#772526"
                   },
                   {
-                    min: 10000,
+                    min: 5000,
                     color: "#480F10"
                   }
                 ]
@@ -190,10 +185,6 @@ const install = function (Vue, options) {
                   }
                 },
                 data
-                // data: [
-                //     { name: '内蒙古', value: 200 },
-                //     { name: '北京', value: 800 },
-                // ]
               }]
             }
             myChart.setOption(option);
@@ -220,7 +211,7 @@ const install = function (Vue, options) {
                 itemGap: 8,  //每两个图元之间的间隔距离
                 itemWidth: 8,
                 itemHeight: remFontSize(0.08),
-                // padding: 2,
+                padding: 2,
                 textStyle: {
                   fontSize: remFontSize(0.09),
                 },
@@ -232,31 +223,21 @@ const install = function (Vue, options) {
                   },
                   {
                     min: 1,
-                    max: 9,
-                    color: "#FAEBD2"
-                  },
-                  {
-                    min: 10,
                     max: 99,
-                    color: "#E9A188"
+                    color: "#D56355"
                   },
                   {
                     min: 100,
                     max: 499,
-                    color: "#D56355"
-                  },
-                  {
-                    min: 500,
-                    max: 999,
                     color: "#BB3937"
                   },
                   {
-                    min: 1000,
-                    max: 10000,
+                    min: 500,
+                    max: 1000,
                     color: "#772526"
                   },
                   {
-                    min: 10000,
+                    min: 1000,
                     color: "#480F10"
                   }
                 ]
@@ -292,10 +273,6 @@ const install = function (Vue, options) {
                   }
                 },
                 data
-                // data: [
-                //     { name: '内蒙古', value: 200 },
-                //     { name: '北京', value: 800 },
-                // ]
               }]
             }
             myChart.setOption(option);
