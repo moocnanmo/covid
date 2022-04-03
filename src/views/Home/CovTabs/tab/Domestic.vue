@@ -6,44 +6,48 @@
       <ul class="wrap">
         <li>
           <div class="number">
-            <span>较昨日</span>{{ covData.currentConfirmedIncr | number }}
+            <span>较昨日</span>
+            {{ covData.currentConfirmedIncr | number }}
           </div>
-          <div class="bold">
-            {{ covData.currentConfirmedCount | division }}
-          </div>
+          <div class="bold">{{ covData.currentConfirmedCount | division }}</div>
           <strong>现存确诊</strong>
         </li>
         <li>
           <div class="number">
-            <span>较昨日</span>{{ covData.suspectedIncr | number }}
+            <span>较昨日</span>
+            {{ covData.suspectedIncr | number }}
           </div>
           <div class="bold">{{ covData.suspectedCount | division }}</div>
           <strong>境外输入</strong>
         </li>
         <li>
           <div class="number">
-            <span>较昨日</span>{{ covData.seriousIncr | number }}
+            <span>较昨日</span>
+            {{ covData.seriousIncr | number }}
           </div>
           <div class="bold">{{ covData.seriousCount | division }}</div>
           <strong>现存无症状</strong>
         </li>
         <li>
           <div class="number">
-            <span>较昨日</span>{{ covData.confirmedIncr | number }}
+            <span>较昨日</span>
+            {{ covData.confirmedIncr | number }}
           </div>
           <div class="bold">{{ covData.confirmedCount | division }}</div>
           <strong>累计确诊</strong>
         </li>
         <li>
           <div class="number">
-            <span>较昨日</span> {{ covData.deadIncr | number }}
+            <span>较昨日</span>
+            {{ covData.deadIncr | number }}
           </div>
           <div class="bold">{{ covData.deadCount | division }}</div>
           <strong>累计死亡</strong>
         </li>
         <li>
           <div class="number">
-            <span>较昨日</span> {{ covData.curedIncr | number }}
+            <span>较昨日</span>
+            {{ covData.curedIncr | number }}
           </div>
           <div class="bold">{{ covData.curedCount | division }}</div>
           <strong>累计治愈</strong>
@@ -75,39 +79,36 @@
             :key="index"
             @click="toSlide(index)"
             :class="{ active: activeIdx === index }"
-          >
-            {{ item }}
-          </div>
+          >{{ item }}</div>
         </div>
       </div>
     </div>
     <!-- 表格版块 -->
     <div class="tableBox">
       <GTable
-      type="tree"
-      :data="tableData"
-      :column="column"
-      :colorList="colorList"
-      showDetail
-      @detailClick="detailClick"
-    />
+        type="tree"
+        :data="tableData"
+        :column="column"
+        :colorList="colorList"
+        showDetail
+        @detailClick="detailClick"
+      />
     </div>
-    
   </div>
 </template>
 <script>
 export default {
-    props: {
+  props: {
     chinaInfo: {
       type: Array,
-      default: () => {},
+      default: () => { },
     },
   },
-  data() {
+  data () {
     const $this = this;
     return {
-      colorList:['#E3E7F3','#F3BAB0','#E69A8D','#B4C0D5','#95DB9A'],
-       column: [
+      colorList: ['#E3E7F3', '#F3BAB0', '#E69A8D', '#B4C0D5', '#95DB9A'],
+      column: [
         { title: "地区", prop: "name" },
         { title: "现存确诊", prop: "nowConfirm" },
         { title: "累计确诊", prop: "confirm" },
@@ -149,23 +150,24 @@ export default {
     };
   },
   computed: {
-    swiper() {
+    swiper () {
       return this.$refs.mySwiper.$swiper;
     },
   },
   watch: {
-    chinaInfo(val) {
+    chinaInfo (val) {
       val.forEach((item) => {
-        if(item.nowConfirm>0||item.confirm>0||item.dead>0||item.heal>0){
+        if (item.nowConfirm > 0 || item.confirm > 0 || item.dead > 0 || item.heal > 0) {
           let result = {
-          name: item.name,
-          confirm: item.confirm,
-          nowConfirm: item.nowConfirm,
-          dead: item.dead,
-          heal: item.heal,
-          children: []}
+            name: item.name,
+            confirm: item.confirm,
+            nowConfirm: item.nowConfirm,
+            dead: item.dead,
+            heal: item.heal,
+            children: []
+          }
           result.children = item.children.filter((ele) => {
-            return ele.nowConfirm>0||ele.confirm>0||ele.dead>0||ele.heal>0
+            return ele.nowConfirm > 0 || ele.confirm > 0 || ele.dead > 0 || ele.heal > 0
           });
           this.tableData.push(result)
         }
@@ -194,10 +196,10 @@ export default {
       //   });
     },
   },
-  created() {
+  created () {
     window.myClick = this.myClick;
   },
-  mounted() {
+  mounted () {
     this.getDayInfo();
     this.$bus.$on("covData", (data) => {
       this.covData = data;
@@ -207,16 +209,16 @@ export default {
     });
   },
   methods: {
-    myClick(name) {
+    myClick (name) {
       this.$router.push({
         name: "City",
-        query: { city:name },
+        query: { city: name },
       });
     },
-    detailClick(row) {
+    detailClick (row) {
       this.myClick(row.name)
     },
-    getDayInfo() {
+    getDayInfo () {
       this.$api.getDayInfo().then((res) => {
         const result = res.data;
         if (!result) return this.$toast.fail("提示文案");
@@ -233,14 +235,14 @@ export default {
           this.sendData.addConfirme.data.push(item.currentConfirmedIncr);
           this.sendData.addConfirme.xAxisData.push(
             String(item.dateId).slice(4, 6) +
-              "-" +
-              String(item.dateId).slice(-2)
+            "-" +
+            String(item.dateId).slice(-2)
           );
           this.sendData.addabroadConfirme.data.push(item.suspectedCountIncr); //新增境外输入
           this.sendData.addabroadConfirme.xAxisData.push(
             String(item.dateId).slice(4, 6) +
-              "-" +
-              String(item.dateId).slice(-2)
+            "-" +
+            String(item.dateId).slice(-2)
           ); //新增境外输入
         });
         result.data.slice(-360).forEach((item) => {
@@ -252,49 +254,50 @@ export default {
           this.sendData.dead.data.push(item.deadCount); //  累计死亡
           this.sendData.abroadConfirme.xAxisData.push(
             String(item.dateId).slice(4, 6) +
-              "-" +
-              String(item.dateId).slice(-2)
+            "-" +
+            String(item.dateId).slice(-2)
           ); //累计境外输入
           this.sendData.nowConfirme.xAxisData.push(
             String(item.dateId).slice(4, 6) +
-              "-" +
-              String(item.dateId).slice(-2)
+            "-" +
+            String(item.dateId).slice(-2)
           ); //  现存确诊
           this.sendData.confirme.xAxisData.push(
             String(item.dateId).slice(4, 6) +
-              "-" +
-              String(item.dateId).slice(-2)
+            "-" +
+            String(item.dateId).slice(-2)
           ); //  累计确诊
           this.sendData.cure.xAxisData.push(
             String(item.dateId).slice(4, 6) +
-              "-" +
-              String(item.dateId).slice(-2)
+            "-" +
+            String(item.dateId).slice(-2)
           ); //  累计治愈
           this.sendData.dead.xAxisData.push(
             String(item.dateId).slice(4, 6) +
-              "-" +
-              String(item.dateId).slice(-2)
+            "-" +
+            String(item.dateId).slice(-2)
           ); //  累计死亡
         });
         this.init();
       });
     },
-    init() {
-     let colorList = ['#F86149','#F86149','#F86149','#F86149','#F86149',  '#37BCA9','#657797']
+    init () {
+      let colorList = ['#F86149', '#F86149', '#F86149', '#F86149', '#F86149', '#37BCA9', '#657797']
       this.btnList.forEach((item, idx) => {
         const key = [...Object.keys(this.sendData)][idx];
         // console.log(typeof this.sendData[key],[...this.sendData[key]])
         this.$myChart.line(
-          {id:`wrap${idx + 1}`,
-          title:item,
-          colorList:[colorList[idx]],
-          legend:[item],
-          dataList:[this.sendData[key].data],
-          xAxisData:this.sendData[key].xAxisData
-           } );
+          {
+            id: `wrap${idx + 1}`,
+            title: item,
+            colorList: [colorList[idx]],
+            legend: [item],
+            dataList: [this.sendData[key].data],
+            xAxisData: this.sendData[key].xAxisData
+          });
       });
     },
-    toSlide(idx) {
+    toSlide (idx) {
       if (idx === -1) idx = this.btnList.length - 1;
       else if (idx > this.btnList.length - 1) idx = 0;
       // console.log(idx);
@@ -316,8 +319,8 @@ export default {
     margin-bottom: 0.2rem;
   }
 }
-.tableBox{
-  padding:0 0.3rem 0.3rem;
+.tableBox {
+  padding: 0 0.3rem 0.3rem;
 }
 .wrap {
   display: flex;

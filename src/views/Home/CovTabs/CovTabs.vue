@@ -8,18 +8,16 @@
           :key="item"
           @click="tabsClick(index + 1, idx)"
           :class="idx === index + 1 ? 'active' : ''"
-        >
-          {{ item }}
-        </div>
+        >{{ item }}</div>
       </div>
       <!-- 地区疫情 -->
-      <Region :chinaInfo="chinaInfo" v-if="idx === 1"/>
+      <Region :chinaInfo="chinaInfo" v-if="idx === 1" />
       <!-- 国内疫情 -->
-      <Domestic :chinaInfo="chinaInfo" v-if="idx === 2"/>
+      <Domestic :chinaInfo="chinaInfo" v-if="idx === 2" />
       <!-- 海外疫情 -->
-      <Global v-if="idx === 3"/>
+      <Global v-if="idx === 3" />
       <!-- 新冠疫苗 -->
-      <Vaccine v-if="idx === 4"/>
+      <Vaccine v-if="idx === 4" />
     </div>
   </div>
 </template>
@@ -35,67 +33,67 @@ export default {
     Global,
     Vaccine,
   },
-  data() {
+  data () {
     return {
-      chinaInfo:[],
+      chinaInfo: [],
       tabsTitles: ["地区疫情", "国内数据", "海外数据", "新冠疫苗"],
     };
   },
-  created() {
+  created () {
     this.initData()
   },
   methods: {
-    tabsClick(liIdx, ulIdx) {
-      if (ulIdx === liIdx ) return;
+    tabsClick (liIdx, ulIdx) {
+      if (ulIdx === liIdx) return;
       // console.log(document.getElementsByClassName('lsit' + liIdx)[0])
       document.getElementsByClassName("lsit" + liIdx)[0].scrollIntoView(true);
     },
-    initData(){
-      let higMap=new Map()
-      let midMap=new Map()
+    initData () {
+      let higMap = new Map()
+      let midMap = new Map()
       const forMat = (obj) => {
-          obj.total.AddConfirm=obj.today.confirm
-          obj={name:obj.name,...obj.total}
-          obj.higNum=higMap.get(obj.name)||0
-          obj.midNum=midMap.get(obj.name)||0
-          obj.higAndMid=obj.higNum+obj.midNum
-          delete obj.today
-          delete obj.total
+        obj.total.AddConfirm = obj.today.confirm
+        obj = { name: obj.name, ...obj.total }
+        obj.higNum = higMap.get(obj.name) || 0
+        obj.midNum = midMap.get(obj.name) || 0
+        obj.higAndMid = obj.higNum + obj.midNum
+        delete obj.today
+        delete obj.total
         return obj
-       }
-       //存储高风险地区city-count的映射
+      }
+      //存储高风险地区city-count的映射
       this.$api.getRisk().then((res) => {
         const result = res.data;
         if (!result) return this.$toast.fail("提示文案");
-        result.data[0].dangerPros.forEach((prov)=>{
-          higMap.set(prov.provinceShortName,prov.dangerAreas.length)
-          prov.dangerAreas.forEach(item=>{
-            const value=higMap.get(item.cityName)?higMap.get(item.cityName)+1:1
-            higMap.set(item.cityName,value)
+        result.data[0].dangerPros.forEach((prov) => {
+          higMap.set(prov.provinceShortName, prov.dangerAreas.length)
+          prov.dangerAreas.forEach(item => {
+            const value = higMap.get(item.cityName) ? higMap.get(item.cityName) + 1 : 1
+            higMap.set(item.cityName, value)
           })
         })
         //存储地风险地区city-count的映射
-        result.data[1].dangerPros.forEach((prov)=>{
-          midMap.set(prov.provinceShortName,prov.dangerAreas.length)
-          prov.dangerAreas.forEach(item=>{
-            const value=midMap.get(item.cityName)?midMap.get(item.cityName)+1:1
-            midMap.set(item.cityName,value)
+        result.data[1].dangerPros.forEach((prov) => {
+          midMap.set(prov.provinceShortName, prov.dangerAreas.length)
+          prov.dangerAreas.forEach(item => {
+            const value = midMap.get(item.cityName) ? midMap.get(item.cityName) + 1 : 1
+            midMap.set(item.cityName, value)
           })
         })
         //存储到localStorage
-      localStorage.setItem("higMap",JSON.stringify([...higMap]));
-      localStorage.setItem("midMap",JSON.stringify([...midMap]));
+        localStorage.setItem("higMap", JSON.stringify([...higMap]));
+        localStorage.setItem("midMap", JSON.stringify([...midMap]));
       });
-      
+
       this.$api.getChinaData().then((res) => {
-        const result=res.data.data.diseaseh5Shelf.areaTree[0].children
-        result.forEach((item)=>{
-          const obj=forMat(item)
-          obj.children=item.children&&item.children.map(it=>forMat(it))
+        const result = res.data.data.diseaseh5Shelf.areaTree[0].children
+        result.forEach((item) => {
+          const obj = forMat(item)
+          obj.children = item.children && item.children.map(it => forMat(it))
           this.chinaInfo.push(obj)
         })
       })
-   },
+    },
   },
 };
 </script>
@@ -113,7 +111,7 @@ export default {
         line-height: 0.72rem;
         text-align: center;
         flex-grow: 1;
-        font-size: .3rem;
+        font-size: 0.3rem;
       }
       .active {
         border-radius: 0.2rem 0.2rem 0 0;

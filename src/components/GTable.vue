@@ -1,10 +1,6 @@
 <template>
   <div>
-    <div
-      :class="{ listNav: true, hide: !isFixed }"
-      cellpadding="0"
-      cellspacing="0"
-    >
+    <div :class="{ listNav: true, hide: !isFixed }" cellpadding="0" cellspacing="0">
       <table>
         <thead>
           <tr ref="fixed-tr">
@@ -12,18 +8,13 @@
               v-for="(item, idx) in column"
               :key="idx"
               :style="{ backgroundColor: colorList[idx] }"
-            >
-              {{ item.title }}
-            </th>
+            >{{ item.title }}</th>
             <th v-if="showDetail" style="width: 0.8rem">疫情</th>
           </tr>
         </thead>
       </table>
     </div>
-    <div
-      class="listWraper"
-      :style="{ maxHeight: OverHeight && showMore ? height + 'px' : '' }"
-    >
+    <div class="listWraper" :style="{ maxHeight: OverHeight && showMore ? height + 'px' : '' }">
       <table cellpadding="0" cellspacing="0" ref="table">
         <thead>
           <tr ref="table-tr">
@@ -31,9 +22,7 @@
               v-for="(item, idx) in column"
               :key="idx"
               :style="{ backgroundColor: colorList[idx] }"
-            >
-              {{ item.title }}
-            </th>
+            >{{ item.title }}</th>
             <th v-if="showDetail">疫情</th>
           </tr>
         </thead>
@@ -65,7 +54,8 @@
                   <span>{{ item[ele.prop] }}</span>
                 </td>
                 <td v-if="showDetail" class="detail" @click="detail(item)">
-                  详情<svg-icon icon-class="chevron-right" />
+                  详情
+                  <svg-icon icon-class="chevron-right" />
                 </td>
               </tr>
               <template v-if="item.children">
@@ -75,25 +65,18 @@
                   v-for="it in item.children"
                   :key="it.title"
                 >
-                  <td v-for="(ele, idx) in column" :key="idx">
-                    {{ it[ele.prop] }}
-                  </td>
+                  <td v-for="(ele, idx) in column" :key="idx">{{ it[ele.prop] }}</td>
                   <td v-if="showDetail"></td>
                 </tr>
               </template>
             </template>
           </template>
           <template v-else>
-            <tr
-              v-for="(item, index) in data"
-              :key="index"
-              class="normalContainer"
-            >
-              <td v-for="(ele, idx) in column" :key="idx">
-                {{ item[ele.prop] }}
-              </td>
+            <tr v-for="(item, index) in data" :key="index" class="normalContainer">
+              <td v-for="(ele, idx) in column" :key="idx">{{ item[ele.prop] }}</td>
               <td v-if="showDetail" class="detail" @click="detail(item)">
-                详情<svg-icon icon-class="chevron-right" />
+                详情
+                <svg-icon icon-class="chevron-right" />
               </td>
             </tr>
           </template>
@@ -109,7 +92,6 @@
 </template>
 <script>
 import remFontSize from "@/utils/remFontSize.js";
-// import { v4 } from "uuid"; // npm install -S uuid
 import throttle from "@/utils/throttle.js";
 import debounce from "@/utils/debounce.js";
 export default {
@@ -137,13 +119,13 @@ export default {
       default: () => "",
     },
   },
-  data() {
+  data () {
     return {
       isFixed: false, //是否吸顶
       tableData: [],
       isOpenList: [], //树形表格是否召开子节点
       throttle: throttle(this.handleScroll, 200), //包裹节流函数
-      debounce:debounce(this.initWidth,800),
+      debounce: debounce(this.initWidth, 800),
       OverHeight: false, //如果表格限制高度，是否超过高度
       showMore: true, //如果表格限制高度，是否显示【查看更多】文字,
       height: "", //如果表格限制高度，height是处理过的要限制高度，防止表格高度限制后最后一行数据显示不全,
@@ -151,34 +133,32 @@ export default {
     };
   },
   watch: {},
-  created() {
+  created () {
     this.init();
   },
-  mounted() {
+  mounted () {
     this.$nextTick(() => {
       window.addEventListener("scroll", this.throttle);
-      window.addEventListener("resize",this.debounce);
+      window.addEventListener("resize", this.debounce);
       this.$once("initWidth", this.initWidth);
       this.$once("judeHeight", this.judeHeight);
     });
   },
-  activated() {
+  activated () {
     // handleScroll为页面滚动的监听回调
     window.addEventListener("scroll", this.throttle);
-    window.addEventListener("resize",this.debounce);
+    window.addEventListener("resize", this.debounce);
   },
   methods: {
-    init() {
+    init () {
       if (this.type === "tree") {
         this.isOpenList = new Array(this.data.length).fill(false);
-        // console.log(this.isOpenList);
       }
     },
-    judeHeight() {
+    judeHeight () {
       const height = this.$refs.table.offsetHeight;
       this.HeightList.push(height);
       this.height = height;
-      // console.log(height,this.clientHeight)
       if (this.limitHeight && height > this.limitHeight) {
         const thHeight = remFontSize(0.32); //表头高度
         const trHeight = remFontSize(0.24); //表格单元高度
@@ -188,28 +168,24 @@ export default {
         this.HeightList.push(this.height);
       }
     },
-    clickMore() {
+    clickMore () {
       this.showMore = !this.showMore;
       this.height = this.showMore ? this.HeightList[1] : this.HeightList[0];
     },
     //初始化吸顶表列头每个th的宽度
-    initWidth() {
-      // listNav>table>thead>tr>th
+    initWidth () {
       const thList = this.$refs["table-tr"].children;
       const thCVList = this.$refs["fixed-tr"].children;
       for (let i = 0; i < thCVList.length; i++) {
-        // console.log(getComputedStyle(thList[i]).getPropertyValue('width'))
         thCVList[i].style.width = window.getComputedStyle(thList[i]).width;
       }
     },
-    preClick(index) {
-      // console.log(111)
-      // this.data[index].isOpen=!this.data[index].isOpen
+    preClick (index) {
       const flag = !this.isOpenList[index];
       this.$set(this.isOpenList, index, flag);
     },
 
-    handleScroll() {
+    handleScroll () {
       // 得到页面滚动的距离
       let offsetTop = this.$refs.table.offsetTop;
       let scrollTop =
@@ -227,19 +203,19 @@ export default {
           : false;
     },
     //点击详情
-    detail(item) {
+    detail (item) {
       this.$emit("detailClick", item);
     },
   },
-  deactivated() {
+  deactivated () {
     //  同时在deactivated回调中移除监听：
     window.removeEventListener("scroll", this.throttle);
-    window.removeEventListener("resize",this.debounce);
+    window.removeEventListener("resize", this.debounce);
     this.isFixed = false;
   },
-  destroyed() {
+  destroyed () {
     window.removeEventListener("scroll", this.throttle);
-    window.removeEventListener("resize",this.debounce);
+    window.removeEventListener("resize", this.debounce);
     this.isFixed = false;
   },
 };

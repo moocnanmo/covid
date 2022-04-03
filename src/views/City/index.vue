@@ -5,35 +5,27 @@
       <div class="city-switch" @click="switchCity">切换省份</div>
       <div class="cityName-div">
         <span class="cityName">{{ cityName }}</span>
-        <span class="">疫情实时动态</span>
+        <span class>疫情实时动态</span>
       </div>
-      <img src="@/assets/images/logo-city.jpg" alt="" />
+      <img src="@/assets/images/logo-city.jpg" alt />
     </div>
     <div class="wrap">
       <div class="wrap-item">
         <ul class="total">
           <li>
-            <div class="bold">
-              {{ currCityInfo.nowConfirm | division }}
-            </div>
+            <div class="bold">{{ currCityInfo.nowConfirm | division }}</div>
             <strong>现存确诊</strong>
           </li>
           <li>
-            <div class="bold">
-              {{ currCityInfo.confirm | division }}
-            </div>
+            <div class="bold">{{ currCityInfo.confirm | division }}</div>
             <strong>累计确诊</strong>
           </li>
           <li>
-            <div class="bold">
-              {{ currCityInfo.dead | division }}
-            </div>
+            <div class="bold">{{ currCityInfo.dead | division }}</div>
             <strong>累计死亡</strong>
           </li>
           <li>
-            <div class="bold">
-              {{ currCityInfo.heal | division }}
-            </div>
+            <div class="bold">{{ currCityInfo.heal | division }}</div>
             <strong>累计治愈</strong>
           </li>
         </ul>
@@ -43,22 +35,13 @@
         <div class="chartDiv">
           <van-tabs v-model="active" animated @change="tabChange">
             <van-tab title="现存确诊">
-              <div
-                id="curConfirm"
-                style="width: 7.0rem; height: 6rem; margin: 0 auto"
-              ></div>
+              <div id="curConfirm" style="width: 7.0rem; height: 6rem; margin: 0 auto"></div>
             </van-tab>
             <van-tab title="风险地区">
-              <div
-                id="riskArea"
-                style="width: 7.0rem; height: 6rem; margin: 0 auto"
-              ></div>
+              <div id="riskArea" style="width: 7.0rem; height: 6rem; margin: 0 auto"></div>
             </van-tab>
             <van-tab title="累计确诊">
-              <div
-                id="confirm"
-                style="width: 7.0rem; height: 6rem; margin: 0 auto"
-              ></div>
+              <div id="confirm" style="width: 7.0rem; height: 6rem; margin: 0 auto"></div>
             </van-tab>
           </van-tabs>
         </div>
@@ -67,15 +50,11 @@
         <div class="signTitle">风险地区</div>
         <ul class="total risk">
           <li>
-            <div class="bold">
-              {{ currCityInfo.higNum | division }}
-            </div>
+            <div class="bold">{{ currCityInfo.higNum | division }}</div>
             <strong>高风险地区</strong>
           </li>
           <li>
-            <div class="bold">
-              {{ currCityInfo.midNum | division }}
-            </div>
+            <div class="bold">{{ currCityInfo.midNum | division }}</div>
             <strong>中风险地区</strong>
           </li>
         </ul>
@@ -88,24 +67,15 @@
       </div>
       <div class="wrap-item">
         <div class="signTitle">现存确诊</div>
-        <div
-          id="line-curConfirm"
-          style="width: 7.2rem; height: 5rem; margin: 0 auto"
-        ></div>
+        <div id="line-curConfirm" style="width: 7.2rem; height: 5rem; margin: 0 auto"></div>
       </div>
       <div class="wrap-item">
         <div class="signTitle">新增（确诊、死亡、治愈）</div>
-        <div
-          id="line-add"
-          style="width: 7.2rem; height: 6rem; margin: 0 auto"
-        ></div>
+        <div id="line-add" style="width: 7.2rem; height: 6rem; margin: 0 auto"></div>
       </div>
       <div class="wrap-item">
         <div class="signTitle">累计（确诊、死亡、治愈）</div>
-        <div
-          id="line-count"
-          style="width: 7.2rem; height: 6rem; margin: 0 auto"
-        ></div>
+        <div id="line-count" style="width: 7.2rem; height: 6rem; margin: 0 auto"></div>
       </div>
     </div>
     <!-- 选择框弹出层 -->
@@ -124,7 +94,7 @@ import debounce from '@/utils/debounce.js'
 import { replaceList } from "./index.js";
 export default {
   name: "City",
-  data() {
+  data () {
     return {
       colorList: [
         "#E3E7F3",
@@ -152,7 +122,7 @@ export default {
       cityList: [],      //下拉选择框省份列表
       riskAreaArr: [],   //地图映射的数据--风险地区
       confirmArr: [],    //地图映射的数据--累计确诊
-      excludeList: ["台湾", "香港", "澳门"],   
+      excludeList: ["台湾", "香港", "澳门"],
     };
   },
   //定义过滤器
@@ -170,32 +140,32 @@ export default {
       //   });
     },
   },
-  created() {
+  created () {
     this.getData();
     this.getCity();
   },
-  activated() {
+  activated () {
     this.cityName = this.$route.query.city;
   },
   watch: {
-    cityName() {
+    cityName () {
       if (this.allCityInfo.size > 0) {
         this.active = 0;
         this.initMap();
       }
-      debounce(this.getCityDayInfo,500)();
-      
+      debounce(this.getCityDayInfo, 500)();
+
     },
   },
   methods: {
-    switchCity() {
+    switchCity () {
       this.showPopup = true;
     },
-    goBack() {
+    goBack () {
       this.$router.go(-1);
     },
-    tabChange(activeIdx) {
-      if (activeIdx === 1) {
+    tabChange (activeIdx) {
+      if (activeItabChangedx === 1) {
         this.$nextTick(() => {
           this.$myChart.cityMap("riskArea", this.riskAreaArr, this.cityName);
         });
@@ -206,20 +176,20 @@ export default {
         });
       }
     },
-    initMap() {
+    initMap () {
       let arr = JSON.parse(JSON.stringify(this.allCityInfo.get(this.cityName)));
       this.tableData = arr.children;
       this.confirmArr = [];
       this.riskAreaArr = [];
       let curConfirmArr = [];
-      this.tableData&&this.tableData.forEach((item) => {
+      this.tableData && this.tableData.forEach((item) => {
         let obj1 = {},
           obj2 = {},
           obj3 = {};
         //名称简单处理-- 和地图数据对应起来
         //处理当前的item.city的名称的最后一个标识：盟 州 区 旗  否则补字段+'市'
         /** */
-        
+
         if (["北京", "上海"].includes(arr.name)) {
           obj1.name = item.name + "区";
           obj2.name = item.name + "区";
@@ -259,7 +229,7 @@ export default {
         this.$myChart.cityMap("curConfirm", curConfirmArr, this.cityName);
       });
     },
-    getData() {
+    getData () {
       let higMap = new Map(JSON.parse(localStorage.getItem("higMap")));
       let midMap = new Map(JSON.parse(localStorage.getItem("midMap")));
       const forMat = (obj) => {
@@ -284,7 +254,7 @@ export default {
         this.initMap();
       });
     },
-    getCity() {
+    getCity () {
       this.$api.getRiskCity().then((res) => {
         const result = res.data;
         if (!result) return this.$toast.fail("提示文案");
@@ -296,51 +266,54 @@ export default {
         });
       });
     },
-    getCityDayInfo() {
+    getCityDayInfo () {
       this.$api.getCityDayInfo(this.cityName).then((res) => {
         const result = res.data.data;
         if (!result) return this.$toast.fail("提示文案");
         this.CityDayInfo = result.slice(-730);
-        let colorList = ['#F86149',  '#657797','#37BCA9']
-        let xAxisData=this.CityDayInfo.map(item=>item.date.split('.').join('-'))
+        let colorList = ['#F86149', '#657797', '#37BCA9']
+        let xAxisData = this.CityDayInfo.map(item => item.date.split('.').join('-'))
         //现存确诊
-        let CurConfirmArr=this.CityDayInfo.map(item=>item.confirm-item.dead-item.heal)
+        let CurConfirmArr = this.CityDayInfo.map(item => item.confirm - item.dead - item.heal)
         this.$myChart.line(
-          {id:'line-curConfirm',
-          colorList:['#F86149'],
-          legend:['现存确诊'],
-          dataList:[CurConfirmArr],
-          xAxisData: xAxisData,
-          showTooltip:true,
-           })
-   
+          {
+            id: 'line-curConfirm',
+            colorList: ['#F86149'],
+            legend: ['现存确诊'],
+            dataList: [CurConfirmArr],
+            xAxisData: xAxisData,
+            showTooltip: true,
+          })
+
         //新增（确诊、死亡、治愈）
-        let AddConfirmArr=this.CityDayInfo.map(item=>item.newConfirm)
-        let AddDeadArr=this.CityDayInfo.map(item=>item.newDead)
-        let AddHealArr=this.CityDayInfo.map(item=>item.newHeal)
+        let AddConfirmArr = this.CityDayInfo.map(item => item.newConfirm)
+        let AddDeadArr = this.CityDayInfo.map(item => item.newDead)
+        let AddHealArr = this.CityDayInfo.map(item => item.newHeal)
         this.$myChart.line(
-          {id:'line-add',
-          colorList,
-          legend:['新增确诊','新增死亡','新增治愈'],
-          dataList:[AddConfirmArr,AddDeadArr,AddHealArr],
-          xAxisData: xAxisData,
-          showTooltip:true
-           })
+          {
+            id: 'line-add',
+            colorList,
+            legend: ['新增确诊', '新增死亡', '新增治愈'],
+            dataList: [AddConfirmArr, AddDeadArr, AddHealArr],
+            xAxisData: xAxisData,
+            showTooltip: true
+          })
         //累计（确诊、死亡、治愈）
-        let confirmArr=this.CityDayInfo.map(item=>item.confirm)
-        let deadArr=this.CityDayInfo.map(item=>item.dead)
-        let healArr=this.CityDayInfo.map(item=>item.heal)
+        let confirmArr = this.CityDayInfo.map(item => item.confirm)
+        let deadArr = this.CityDayInfo.map(item => item.dead)
+        let healArr = this.CityDayInfo.map(item => item.heal)
         this.$myChart.line(
-          {id:'line-count',
-          legend:['累计确诊','累计死亡','累计治愈'],
-          colorList,
-          dataList:[confirmArr,deadArr,healArr],
-          xAxisData: xAxisData,
-          showTooltip:true
-           })
+          {
+            id: 'line-count',
+            legend: ['累计确诊', '累计死亡', '累计治愈'],
+            colorList,
+            dataList: [confirmArr, deadArr, healArr],
+            xAxisData: xAxisData,
+            showTooltip: true
+          })
       });
     },
-    onConfirm(select) {
+    onConfirm (select) {
       this.cityName = select.value;
       this.showPopup = false;
     },

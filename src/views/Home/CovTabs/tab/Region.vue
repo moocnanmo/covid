@@ -152,7 +152,6 @@ export default {
         this.riskAreaArr.push(obj2);
         curConfirmArr.push(obj3);
       });
-      // console.log('a',curConfirmArr)
       this.$myChart.chinaMap("curConfirm", curConfirmArr);
     },
   },
